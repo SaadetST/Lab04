@@ -43,6 +43,7 @@ class _MainPageState extends State<MainPage> {
   List<Map<String, dynamic>> gifList = [];
   String statusText = "Type something and press Search.";
 
+  /// Deletes memory when screen is gone to prevent leaks
   @override
   void dispose() {
     searchController.dispose();
@@ -54,17 +55,22 @@ class _MainPageState extends State<MainPage> {
     
     // encodeComponent makes spaces and symbols URL-safe, so "funny cat" works.
     String term = Uri.encodeComponent(searchController.text.trim());
+    
+    // Checks for empty searches, resets gifs if so
+    if(term == ""){
+      setState(() {
+        statusText = "Please enter a search term first!";
+        gifList = [];
+      });
+      return;
+    }
+
     String url =
         "https://api.giphy.com/v1/gifs/search?api_key=$apiKey&q=$term&limit=$selectedLimit";
     debugPrint(url);
 
+    // returns relevent gifs, status, and catches errors if need be
     try{
-
-      if(term == ""){
-        statusText = "Please enter a search term first!";
-        return;
-      }
-
       var response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
@@ -101,6 +107,7 @@ class _MainPageState extends State<MainPage> {
     }
   }
   
+  /// Draws on screen
   @override
   Widget build(BuildContext context) {
     return Scaffold(

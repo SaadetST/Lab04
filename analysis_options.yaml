@@ -1,0 +1,16 @@
+include: package:flutter_lints/flutter.yaml
+
+# Keeps your trailing commas: add a comma after the last argument and the
+# formatter leaves each argument on its own line (same fix as Week 2B).
+formatter:
+  trailing_commas: preserve
+
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
